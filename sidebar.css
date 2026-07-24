@@ -1,0 +1,249 @@
+/* ============================================
+   RAM KINKAR SHAHI MEMORIAL FOUNDATION
+   Reusable Admin Sidebar + Navbar — sidebar.css
+   Include on every admin page alongside style.css
+============================================ */
+
+:root {
+  --fdn-p1: #0A2E5C;      /* deep navy — govt header blue */
+  --fdn-p2: #123F7A;      /* mid navy */
+  --fdn-p3: #1C56A0;      /* lighter navy (sidebar gradient end) */
+  --fdn-teal: #D97B29;    /* saffron — navbar gradient end */
+  --fdn-gold: #F2A93C;    /* gold/amber — active menu, badge, accents */
+  --fdn-sidebar-w: 300px;
+  --fdn-navbar-h: 68px;
+}
+
+/* ===================== NAVBAR ===================== */
+.fdn-navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: var(--fdn-navbar-h);
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 26px;
+  background: linear-gradient(90deg, var(--fdn-p1) 0%, var(--fdn-p2) 55%, var(--fdn-teal) 130%);
+  box-shadow: 0 3px 16px rgba(10, 46, 92, 0.25);
+  color: #fff;
+  transition: left 0.3s ease;
+}
+body.fdn-sidebar-open .fdn-navbar { left: var(--fdn-sidebar-w); }
+
+.fdn-navbar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+
+.fdn-navbar-hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.16);
+  color: #fff;
+  font-size: 1.05rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+.fdn-navbar-hamburger:hover { background: rgba(255,255,255,0.26); }
+
+.fdn-navbar-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.08rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fdn-navbar-crumb {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.16);
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.fdn-navbar-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.fdn-navbar-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--fdn-gold);
+  color: var(--fdn-p1);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fdn-navbar-logout {
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.32);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.fdn-navbar-logout:hover { background: rgba(255,255,255,0.28); }
+
+/* ===================== SIDEBAR ===================== */
+.fdn-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--fdn-sidebar-w);
+  background: linear-gradient(200deg, var(--fdn-p1) 0%, var(--fdn-p2) 55%, var(--fdn-p3) 120%);
+  color: #fff;
+  z-index: 1000;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  box-shadow: 4px 0 20px rgba(10, 46, 92, 0.3);
+}
+body.fdn-sidebar-open .fdn-sidebar { transform: translateX(0); }
+
+.fdn-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.16);
+  letter-spacing: 0.3px;
+}
+.fdn-sidebar-brand-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--fdn-gold);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px rgba(242, 169, 60, 0.28);
+}
+
+.fdn-sidebar-group-label {
+  padding: 16px 22px 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+.fdn-sidebar-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.fdn-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  color: rgba(255,255,255,0.9);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 500;
+  padding: 13px 20px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.fdn-item-icon { font-size: 1rem; }
+.fdn-item-label { flex: 1; }
+.fdn-chevron { font-size: 0.7rem; opacity: 0.75; transition: transform 0.2s ease; }
+li.fdn-expanded > .fdn-item .fdn-chevron { transform: rotate(180deg); }
+
+.fdn-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.fdn-item.fdn-active {
+  background: rgba(242, 169, 60, 0.18);
+  border-left-color: var(--fdn-gold);
+  color: var(--fdn-gold);
+  font-weight: 600;
+}
+
+.fdn-submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  background: rgba(0,0,0,0.18);
+  transition: max-height 0.25s ease;
+}
+li.fdn-expanded > .fdn-submenu { max-height: 260px; }
+
+.fdn-subitem {
+  width: 100%;
+  display: block;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.78);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  padding: 11px 22px 11px 46px;
+  cursor: pointer;
+  text-align: left;
+  border-left: 3px solid transparent;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.fdn-subitem:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.fdn-subitem.fdn-active {
+  color: var(--fdn-gold);
+  border-left-color: var(--fdn-gold);
+  background: rgba(255,255,255,0.08);
+}
+
+.fdn-sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.42);
+  z-index: 999;
+}
+
+/* ===================== PAGE CONTENT OFFSET ===================== */
+body.fdn-with-sidebar .admin-shell {
+  margin-left: 0;
+  padding: calc(var(--fdn-navbar-h) + 34px) 32px 40px;
+  transition: margin-left 0.3s ease;
+}
+body.fdn-with-sidebar.fdn-sidebar-open .admin-shell {
+  margin-left: var(--fdn-sidebar-w);
+}
+
+.fdn-section.fdn-hidden,
+.admin-card.fdn-hidden {
+  display: none !important;
+}
+
+/* ===================== RESPONSIVE (mobile = overlay drawer) ===================== */
+@media (max-width: 900px) {
+  .fdn-navbar-crumb { display: none; }
+
+  body.fdn-with-sidebar.fdn-sidebar-open .admin-shell { margin-left: 0; }
+  body.fdn-sidebar-open .fdn-navbar { left: 0; }
+
+  body.fdn-sidebar-open .fdn-sidebar-overlay { display: block; }
+  body.fdn-with-sidebar .admin-shell { padding: calc(var(--fdn-navbar-h) + 24px) 18px 40px; }
+}

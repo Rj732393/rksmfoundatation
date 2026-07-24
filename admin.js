@@ -3,7 +3,7 @@
 //  admin.js — Legal & Registration admin panel
 //  Talks to the Node/Express + MSSQL backend
 //  via legal-api.js. Real auth (bcrypt + JWT)
-//  on the server side.
+//  on the server side. Sidebar/navbar wired via sidebar.js.
 // ============================================
 
 let adminRecords = [];
@@ -32,6 +32,7 @@ function logout() {
   document.getElementById('panel').style.display = 'none';
   document.getElementById('loginBox').style.display = 'block';
   document.getElementById('pw').value = '';
+  if (typeof destroySidebar === 'function') destroySidebar();
 }
 
 async function showPanel() {
@@ -40,6 +41,7 @@ async function showPanel() {
   await loadAndRenderCards();
   await loadAndRenderGallery();
   await loadAndRenderPeople();
+  if (typeof initSidebar === 'function') initSidebar('registration');
 }
 
 async function loadAndRenderCards() {
@@ -110,6 +112,9 @@ function renderAdminCards() {
     const removeBtn = card.querySelector('[data-role="removeBtn"]');
     if (removeBtn) removeBtn.addEventListener('click', () => removeFile(id, card));
   });
+
+  // Keep the sidebar's active registration filter (12AB / 80G / Trust-Society) applied
+  if (typeof fdnReapplyFilter === 'function') fdnReapplyFilter();
 }
 
 async function saveRecord(id, card) {
@@ -249,6 +254,7 @@ async function deleteGalleryImage(id) {
 
 // ============================
 // PEOPLE MANAGEMENT (Advisory Council / Volunteers / Brand Ambassadors)
+// Same fields/form for all three — sidebar swaps heading + filter.
 // ============================
 const CATEGORY_LABELS = {
   advisory_council: 'Advisory Council',
@@ -266,7 +272,7 @@ async function loadAndRenderPeople() {
       return;
     }
     list.innerHTML = people.map(p => `
-      <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--border);">
+      <div data-category="${p.category}" style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--border);">
         ${p.photoUrl
           ? `<img src="${legalResolveUploadUrl(p.photoUrl)}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"/>`
           : `<div style="width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.8rem;">${(p.name||'').slice(0,2).toUpperCase()}</div>`}
@@ -283,6 +289,9 @@ async function loadAndRenderPeople() {
   } catch (e) {
     list.innerHTML = `<p class="legal-empty">Could not load list: ${e.message}</p>`;
   }
+
+  // Keep the sidebar's active People filter (Advisory Council / Volunteer / Brand Ambassador) applied
+  if (typeof fdnReapplyPeopleFilter === 'function') fdnReapplyPeopleFilter();
 }
 
 async function addPerson() {
