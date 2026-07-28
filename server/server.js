@@ -1,11 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-
-
 import express from "express";
 import cors from "cors";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 import authRoutes from "./routes/auth.js";
@@ -25,8 +24,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
 app.use(
   "/uploads",
   express.static(path.join(__dirname, "uploads"), {
@@ -35,6 +32,36 @@ app.use(
     }
   })
 );
+
+// ===== VIDEO PLAYER SETUP =====
+
+// HTML files (player.html, index.html, etc.)
+app.use(express.static(__dirname));
+
+// Videos static folder
+app.use("/videos", express.static(path.join(__dirname, "server/videos")));
+
+// Video API
+app.get("/api/video/:folder", (req, res) => {
+  const folder = req.params.folder;
+  const dir = path.join(__dirname, "server/videos", folder);
+
+  if (!fs.existsSync(dir))
+    return res.status(404).json({ error: "Folder not found" });
+
+  const file = fs.readdirSync(dir).find(f =>
+    /\.(mp4|mov|mkv|webm)$/i.test(f)
+  );
+
+  if (!file)
+    return res.status(404).json({ error: "Video not found" });
+
+  res.json({
+    video: `/videos/${folder}/${file}`
+  });
+});
+
+// ===== EXISTING API ROUTES =====
 
 app.use("/api/auth", authRoutes);
 app.use("/api/legal", legalRoutes);
@@ -49,6 +76,12 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// ===== VIDEO PLAYER CATCH-ALL (rakhna hai API routes ke BAAD, 404 se PEHLE) =====
+app.get("/:folder", (req, res) => {
+  res.sendFile(path.join(__dirname, "player.html"));
+});
+
+// ===== 404 HANDLER =====
 app.use((req, res) => {
   res.status(404).json({
     success: false,

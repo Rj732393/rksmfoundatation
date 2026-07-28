@@ -1229,7 +1229,7 @@ img { display: block; max-width: 100%; }
   background: none;
   border: none;
   font: inherit;
-  color: inherit;
+  color: var(--white);
   cursor: pointer;
   padding: 0;
   display: inline-flex;
