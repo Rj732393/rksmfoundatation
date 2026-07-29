@@ -39,25 +39,25 @@ app.use(
 app.use(express.static(__dirname));
 
 // Videos static folder
-app.use("/videos", express.static(path.join(__dirname, "server/videos")));
+app.use("/videos", express.static(path.join(__dirname, "videos")));
 
 // Video API
 app.get("/api/video/:folder", (req, res) => {
   const folder = req.params.folder;
-  const dir = path.join(__dirname, "server/videos", folder);
+  const dir = path.join(__dirname, "videos", folder);
 
   if (!fs.existsSync(dir))
     return res.status(404).json({ error: "Folder not found" });
 
-  const file = fs.readdirSync(dir).find(f =>
+  const files = fs.readdirSync(dir).filter(f =>
     /\.(mp4|mov|mkv|webm)$/i.test(f)
   );
 
-  if (!file)
+  if (files.length === 0)
     return res.status(404).json({ error: "Video not found" });
 
   res.json({
-    video: `/videos/${folder}/${file}`
+    videos: files.map(f => `/videos/${folder}/${f}`)
   });
 });
 

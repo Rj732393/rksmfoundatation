@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<style>
+html,body{
+margin:0;
+width:100%;
+height:100%;
+background:#000;
+overflow:hidden;
+}
+
+video{
+width:100vw;
+height:100vh;
+object-fit:contain;
+}
+</style>
+
+</head>
+
+<body>
+
+<video id="video" autoplay muted playsinline disablePictureInPicture controlsList="nodownload noplaybackrate"></video>
+
+<script>
+
+const folder = window.location.pathname.split("/")[1];
+
+let videos = [];
+let currentIndex = 0;
+const v = document.getElementById("video");
+
+fetch("/api/video/" + folder)
+.then(r => r.json())
+.then(data => {
+
+    videos = data.videos;
+
+    playCurrent();
+
+});
+
+function playCurrent() {
+    v.src = videos[currentIndex];
+    v.play();
+}
+
+v.addEventListener("ended", () => {
+    currentIndex = (currentIndex + 1) % videos.length;
+    playCurrent();
+});
+
+</script>
+
+</body>
+</html>
