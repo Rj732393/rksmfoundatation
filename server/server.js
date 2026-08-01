@@ -103,3 +103,45 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
+// import fs from "fs";
+// import path from "path";
+// import { fileURLToPath } from "url";
+
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
+const counterFile = path.join(__dirname, "counter.json");
+
+function incrementCounter() {
+    const data = JSON.parse(fs.readFileSync(counterFile, "utf8"));
+    data.count++;
+    fs.writeFileSync(counterFile, JSON.stringify(data, null, 2));
+}
+
+function getCounter() {
+    return JSON.parse(fs.readFileSync(counterFile, "utf8")).count;
+}
+
+app.use((req, res, next) => {
+
+    if (!req.cookies?.visited) {
+
+        incrementCounter();
+
+        res.cookie("visited", "yes", {
+            maxAge: 24 * 60 * 60 * 1000
+        });
+    }
+
+    next();
+});
+
+import cookieParser from "cookie-parser";
+app.use(cookieParser());
+
+app.get("/counter", (req, res) => {
+    res.json({
+        count: getCounter()
+    });
+});
