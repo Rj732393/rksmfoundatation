@@ -1455,3 +1455,20 @@ img { display: block; max-width: 100%; }
 .volunteer-btn {
   margin-top: 4px;
 } */
+
+.visitor-counter {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.visitor-counter span {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: linear-gradient(#f9f9f9, #d8d8d8);
+    border: 0.5px solid #9c9c9c;
+    /* border-radius: 2px;
+    padding: 2px 2px; */
+    color: #444;
+}

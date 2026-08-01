@@ -76,5 +76,13 @@
   <script src="legal-api.js"></script>
   <script src="include.js"></script>
   <script src="script.js"></script>
+  <script>
+    fetch("/counter")
+      .then(r => r.json())
+      .then(data => {
+          document.getElementById("visitorCounter").textContent =
+              data.count.toString().padStart(7, "0");
+      });
+  </script>
 </body>
 </html>
