@@ -123,6 +123,9 @@ function getCounter() {
     return JSON.parse(fs.readFileSync(counterFile, "utf8")).count;
 }
 
+import cookieParser from "cookie-parser";
+app.use(cookieParser());
+
 app.use((req, res, next) => {
 
     if (!req.cookies?.visited) {
@@ -136,9 +139,6 @@ app.use((req, res, next) => {
 
     next();
 });
-
-import cookieParser from "cookie-parser";
-app.use(cookieParser());
 
 app.get("/counter", (req, res) => {
     res.json({
