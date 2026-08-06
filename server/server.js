@@ -66,11 +66,6 @@ app.get("/counter", (req, res) => {
   res.json({ count: readCounter() });
 });
 
-// ===== VIDEO PLAYER CATCH-ALL (last, so nothing above gets shadowed) =====
-app.get("/:folder", (req, res) => {
-  res.sendFile(path.join(__dirname, "player.html"));
-});
-
 // ===== VIDEO PLAYER SETUP =====
 
 // HTML files (player.html, index.html, etc.)

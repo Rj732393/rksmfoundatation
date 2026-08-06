@@ -14,15 +14,6 @@
             <img src="https://www.freevisitorcounters.com/en/counter/render/1572167/t/5" border="0" class="counterimg">
           </a> -->
           <span id="visitorCounter" class="digit-counter">0000000</span>
-            <script>
-              fetch('/counter')
-                .then(r => r.json())
-                .then(({ count }) => {
-                  document.getElementById('visitorCounter').textContent =
-                    String(count).padStart(7, '0');
-                })
-                .catch(() => {}); // fail silently, don't break the page
-            </script>
         </div>
       </div>
     </div>
