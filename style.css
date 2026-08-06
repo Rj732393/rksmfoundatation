@@ -5,6 +5,9 @@
    ============================================ */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* *{
+    outline:1px solid red;
+} */
 
 :root {
   --saffron:     #E8700A;
@@ -135,7 +138,7 @@ img { display: block; max-width: 100%; }
 }
 .navbar.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
 
-.nav-inner {
+/* .nav-inner {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 24px;
@@ -143,14 +146,59 @@ img { display: block; max-width: 100%; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+} */
+
+.nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    height: 72px;
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.nav-brand {
+/* .nav-brand {
   display: flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
+} */
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    flex: 1;
+    min-width: 0;
 }
+
+@media (max-width:768px){
+
+    .nav-name{
+        font-size:0.82rem;
+        white-space:nowrap;
+    }
+
+    .nav-sub{
+        font-size:0.65rem;
+        white-space:nowrap;
+    }
+}
+
+@media (max-width:768px){
+
+    .nav-donate-btn{
+        display:none;
+    }
+}
+
+.hamburger{
+    flex-shrink:0;
+}
+
 .nav-logo {
   width: 46px;
   height: 46px;
@@ -435,6 +483,7 @@ img { display: block; max-width: 100%; }
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  width: 100%;
 }
 .about-logo {
   width: 220px;
@@ -561,6 +610,32 @@ img { display: block; max-width: 100%; }
   transform-origin: left;
   transition: transform .3s;
 }
+
+@media (max-width:700px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .nav-donate-btn{
+        display:none;
+    }
+
+    .hamburger{
+        display:flex;
+    }
+}
+
+.mobile-menu{
+    display:none;
+}
+
+.mobile-menu.active{
+    display:flex;
+    flex-direction:column;
+}
+
+
 .mission-card:hover {
   box-shadow: var(--shadow-lift);
   transform: translateY(-4px);
@@ -817,13 +892,21 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 900px) {
   .about-grid { grid-template-columns: 1fr; }
-  .about-logo-wrap { justify-content: flex-start; }
+  .about-logo-wrap { justify-content: center; }
   .legacy-grid { grid-template-columns: 1fr; }
   .legacy-portrait-wrap { flex-direction: row; gap: 28px; align-items: center; justify-content: flex-start; }
   .contact-grid { grid-template-columns: 1fr; }
+  .map-div{
+        margin-top:24px;
+    }
 }
 
-@media (max-width: 700px) {
+img,
+iframe{
+    max-width:100%;
+}
+
+@media (max-width: 768px) {
   :root { --section-pad: 64px 20px; }
   .nav-links { display: none; }
   .hamburger { display: flex; }
@@ -838,6 +921,66 @@ img { display: block; max-width: 100%; }
   .mission-grid { grid-template-columns: 1fr; }
   .team-grid { flex-direction: column; align-items: center; }
 }
+
+/* @media (max-width:768px){
+
+    .nav-links{
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:12px;
+    }
+} */
+
+@media (max-width:768px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .nav-donate-btn{
+        display:none;
+    }
+
+    .hamburger{
+        display:flex;
+    }
+}
+
+.mobile-menu{
+    display:none;
+}
+
+.mobile-menu.active{
+    display:flex;
+    flex-direction:column;
+}
+
+@media (max-width:700px){
+
+    .nav-logo{
+        width:48px;
+        height:48px;
+    }
+
+    .nav-name{
+        font-size:1rem;
+    }
+
+    .nav-sub{
+        font-size:.75rem;
+    }
+}
+
+/* .nav-inner{
+    max-width:1200px;
+    margin:auto;
+    padding:14px 24px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+} */
 
 /* ============================
    SCROLL ANIMATIONS
@@ -1087,6 +1230,7 @@ img { display: block; max-width: 100%; }
   padding: 10px 22px;
   font-size: 0.78rem;
   white-space: nowrap;
+  margin-left: 24px;
 }
 .mobile-donate-link {
   background: var(--saffron);
@@ -1095,6 +1239,57 @@ img { display: block; max-width: 100%; }
   text-align: center;
   font-weight: 600;
   margin-top: 8px;
+}
+
+.mobile-dropdown {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.mobile-dropdown summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    cursor: pointer;
+    list-style: none;
+    padding: 12px 0;
+
+    color: rgba(255,255,255,.85);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.mobile-dropdown summary::-webkit-details-marker {
+    display: none;
+}
+
+.dropdown-arrow {
+    transition: transform .25s ease;
+    font-size: .8rem;
+}
+
+.mobile-dropdown[open] .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.mobile-submenu {
+    display: flex;
+    flex-direction: column;
+    padding-left: 18px;
+    margin-bottom: 8px;
+}
+
+.mobile-submenu a {
+    display: block;
+    padding: 10px 0;
+    color: rgba(255,255,255,.75);
+    text-transform: none;
+    border: none;
+}
+
+.mobile-submenu a:hover {
+    color: var(--saffron-lt);
 }
 
 /* ============================
@@ -1394,6 +1589,13 @@ img { display: block; max-width: 100%; }
 @media (max-width: 700px) {
   .volunteer-card { padding: 36px 24px; }
 }
+
+.digit-counter {
+  font-family: monospace;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.digit-counter::before { content: ""; } /* placeholder if you want per-digit boxes, see note below */
 
 /* ============================
    VOLUNTEER SECTION

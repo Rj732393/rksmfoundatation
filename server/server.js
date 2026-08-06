@@ -11,7 +11,7 @@ import authRoutes from "./routes/auth.js";
 import legalRoutes from "./routes/legal.js";
 import galleryRoutes from "./routes/gallery.js";
 import peopleRoutes from "./routes/people.js";
-import statsRoutes from "./routes/stats.js";
+// import statsRoutes from "./routes/stats.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +32,44 @@ app.use(
     }
   })
 );
+
+// ===== VISITOR COUNTER (must come BEFORE the /:folder catch-all) =====
+import cookieParser from "cookie-parser";
+app.use(cookieParser());
+
+const counterFile = path.join(__dirname, "counter.json");
+
+function readCounter() {
+  try {
+    return JSON.parse(fs.readFileSync(counterFile, "utf8")).count;
+  } catch {
+    fs.writeFileSync(counterFile, JSON.stringify({ count: 0 }, null, 2));
+    return 0;
+  }
+}
+
+function incrementCounter() {
+  const count = readCounter() + 1;
+  fs.writeFileSync(counterFile, JSON.stringify({ count }, null, 2));
+  return count;
+}
+
+app.use((req, res, next) => {
+  if (!req.cookies?.visited) {
+    incrementCounter();
+    res.cookie("visited", "yes", { maxAge: 24 * 60 * 60 * 1000 });
+  }
+  next();
+});
+
+app.get("/counter", (req, res) => {
+  res.json({ count: readCounter() });
+});
+
+// ===== VIDEO PLAYER CATCH-ALL (last, so nothing above gets shadowed) =====
+app.get("/:folder", (req, res) => {
+  res.sendFile(path.join(__dirname, "player.html"));
+});
 
 // ===== VIDEO PLAYER SETUP =====
 
