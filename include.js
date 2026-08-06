@@ -9,6 +9,8 @@
 //    <script src="include.js"></script>
 // ============================================
 
+const API_BASE = window.location.port === '5500' ? 'http://127.0.0.1:4000' : '';
+
 async function loadPartial(url, targetId) {
   const target = document.getElementById(targetId);
   if (!target) return;
@@ -21,6 +23,18 @@ async function loadPartial(url, targetId) {
   }
 }
 
+async function initVisitorCounter() {
+  const el = document.getElementById('visitorCounter');
+  if (!el) return;
+  try {
+    const res = await fetch(`${API_BASE}/counter`); // was: fetch('/counter')
+    const { count } = await res.json();
+    el.textContent = String(count).padStart(7, '0');
+  } catch {
+    // leave placeholder on failure
+  }
+}
+
 async function loadSiteChrome() {
   await Promise.all([
     loadPartial('header.html', 'site-header'),
@@ -28,6 +42,7 @@ async function loadSiteChrome() {
   ]);
   initNavbar();
   initFooterCounter();
+  initVisitorCounter();
 }
 
 function initNavbar() {

@@ -37,12 +37,12 @@
         </div>
       </div> -->
     </nav>
-    <!-- <a href="index.html#donate" class="btn btn-primary nav-donate-btn">Donate Now</a>
+    <a href="index.html#donate" class="btn btn-primary nav-donate-btn">Donate Now</a>
     <button class="hamburger" id="hamburger" aria-label="Open menu">
       <span></span><span></span><span></span>
-    </button> -->
+    </button>
   </div>
-  <div class="mobile-menu" id="mobileMenu">
+  <!-- <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="legacy.html">Legacy</a>
@@ -50,6 +50,35 @@
     <a href="team.html">Team</a>
     <a href="volunteers.html">Volunteer</a>
     <a href="contact.html">Contact</a>
+  </div> -->
+
+  <div class="mobile-menu" id="mobileMenu">
+
+    <a href="index.html">Home</a>
+    <a href="index.html#legal">Legal</a>
+    <a href="mission.html">Objectives</a>
+    <a href="gallery.html">Gallery</a>
+
+    <details class="mobile-dropdown">
+        <summary>
+          About
+          <span class="dropdown-arrow">▾</span>
+        </summary>
+
+        <div class="mobile-submenu">
+          <a href="advisory-council.html">Advisory Council</a>
+          <a href="volunteers.html">Volunteers</a>
+          <a href="brand-ambassador.html">Brand Ambassador</a>
+        </div>
+    </details>
+
+    <a href="contact.html">Contact</a>
+
+    <a href="index.html#donate"
+       class="btn btn-primary mobile-donate-link">
+       Donate Now
+    </a>
+
   </div>
 </header>
 
@@ -59,3 +88,9 @@
       top: -3px;
     }
 </style>
+
+<script>
+  hamburger.addEventListener("click", () => {
+    mobileMenu.classList.toggle("active");
+  });
+</script>
