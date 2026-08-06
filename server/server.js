@@ -11,7 +11,7 @@ import authRoutes from "./routes/auth.js";
 import legalRoutes from "./routes/legal.js";
 import galleryRoutes from "./routes/gallery.js";
 import peopleRoutes from "./routes/people.js";
-// import statsRoutes from "./routes/stats.js";
+import statsRoutes from "./routes/stats.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
