@@ -482,5 +482,14 @@
 
 </div>
 
+  <script>
+    fetch("/counter")
+      .then(r => r.json())
+      .then(data => {
+          document.getElementById("visitorCounter").textContent =
+              data.count.toString().padStart(7, "0");
+      });
+  </script>
+
 </body>
 </html>
