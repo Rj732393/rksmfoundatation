@@ -18,8 +18,26 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Simple CORS
-app.use(cors());
+// Behind Render/Railway's reverse proxy, req.secure and secure cookies
+// need this to work correctly.
+app.set("trust proxy", 1);
+
+// The static site and this API are on different subdomains now, so CORS
+// must allow credentials from that specific origin (wildcard "*" cannot
+// be combined with credentials — the browser will reject it).
+// Reads CORS_ORIGIN from .env — a comma-separated list, e.g.:
+//   CORS_ORIGIN=http://localhost:5500,http://127.0.0.1:5500
+const ALLOWED_ORIGINS = (process.env.CORS_ORIGIN || "https://rkshahifoundation.org")
+  .split(",")
+  .map(origin => origin.trim())
+  .filter(Boolean);
+console.log("CORS will allow:", JSON.stringify(ALLOWED_ORIGINS));
+app.use(
+  cors({
+    origin: ALLOWED_ORIGINS,
+    credentials: true
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,7 +75,11 @@ function incrementCounter() {
 app.use((req, res, next) => {
   if (!req.cookies?.visited) {
     incrementCounter();
-    res.cookie("visited", "yes", { maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie("visited", "yes", {
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      secure: true
+    });
   }
   next();
 });
@@ -66,10 +88,23 @@ app.get("/counter", (req, res) => {
   res.json({ count: readCounter() });
 });
 
+// NOTE: the old "/:folder" catch-all that used to live here was removed —
+// it was registered BEFORE express.static(__dirname) below, so it was
+// swallowing every top-level static file request (header.html, footer.html,
+// about.html, ...) and serving player.html instead. The one correctly-
+// positioned copy (after all real routes, before the 404 handler) is kept.
+
 // ===== VIDEO PLAYER SETUP =====
 
-// HTML files (player.html, index.html, etc.)
-app.use(express.static(__dirname));
+// SECURITY: __dirname contains .env, db.js, create-admin.js, and other
+// files that must never be publicly downloadable. Do NOT use
+// express.static(__dirname) — that serves the entire folder, secrets
+// included, to anyone who requests the filename directly.
+// This server only needs to hand out player.html (for the video routes
+// below); index.html and the rest of the site are served by Apache.
+app.get("/player.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "player.html"));
+});
 
 // Videos static folder
 app.use("/videos", express.static(path.join(__dirname, "videos")));

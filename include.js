@@ -9,7 +9,14 @@
 //    <script src="include.js"></script>
 // ============================================
 
-const API_BASE = window.location.port === '5500' ? 'http://127.0.0.1:4000' : '';
+// The static site (this file, index.html, etc.) is served by Apache shared
+// hosting. The counter/API lives on a SEPARATE Node server, deployed
+// independently (see server/DEPLOY.md). Point at it explicitly — never
+// assume same-origin in production, since they are different hosts.
+const API_BASE =
+  window.location.hostname === 'localhost' || window.location.port === '5500'
+    ? 'http://127.0.0.1:4000'
+    : 'https://api.rkshahifoundation.org'; // ← set once the CNAME below is live
 
 async function loadPartial(url, targetId) {
   const target = document.getElementById(targetId);
@@ -27,7 +34,10 @@ async function initVisitorCounter() {
   const el = document.getElementById('visitorCounter');
   if (!el) return;
   try {
-    const res = await fetch(`${API_BASE}/counter`); // was: fetch('/counter')
+    // credentials: 'include' is required now that the API is on a
+    // different subdomain — otherwise the "visited" dedup cookie never
+    // gets sent/stored and the count increments on every page load.
+    const res = await fetch(`${API_BASE}/counter`, { credentials: 'include' });
     const { count } = await res.json();
     el.textContent = String(count).padStart(7, '0');
   } catch {
